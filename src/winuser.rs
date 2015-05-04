@@ -44,6 +44,16 @@ pub struct WINDOWPOS {
 }
 pub type LPWINDOWPOS = *mut WINDOWPOS;
 pub type PWINDOWPOS = *mut WINDOWPOS;
+
+//3061
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct ACCEL {
+    pub fVirt: ::BYTE,
+    pub key: ::WORD,
+    pub cmd: ::WORD,
+}
+pub type LPACCEL = *mut ACCEL;
+
 //3082
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct CREATESTRUCTA {

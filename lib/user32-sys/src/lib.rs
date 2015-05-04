@@ -110,8 +110,8 @@ extern "system" {
     pub fn CopyImage(h: HANDLE, type_: UINT, cx: c_int, cy: c_int, flags: UINT) -> HANDLE;
     // pub fn CopyRect();
     pub fn CountClipboardFormats() -> c_int;
-    // pub fn CreateAcceleratorTableA();
-    // pub fn CreateAcceleratorTableW();
+    pub fn CreateAcceleratorTableA(paccel: *const ACCEL, cAccel: c_int) -> HACCEL;
+    pub fn CreateAcceleratorTableW(paccel: *const ACCEL, cAccel: c_int) -> HACCEL;
     pub fn CreateCaret(hWnd: HWND, hBitmap: HBITMAP, nWidth: c_int, nHeight: c_int) -> BOOL;
     pub fn CreateCursor(
         hInst: HINSTANCE, xHotSpot: c_int, yHotSpot: c_int, nWidth: c_int, nHeight: c_int,
