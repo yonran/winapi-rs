@@ -295,7 +295,7 @@ extern "system" {
     // pub fn GetBitmapBits();
     // pub fn GetBitmapDimensionEx();
     // pub fn GetBkColor();
-    // pub fn GetBkMode();
+    pub fn GetBkMode() -> c_int;
     // pub fn GetBoundsRect();
     // pub fn GetBrushOrgEx();
     // pub fn GetCharABCWidthsA();
@@ -477,7 +477,7 @@ extern "system" {
     // pub fn SetBitmapBits();
     // pub fn SetBitmapDimensionEx();
     pub fn SetBkColor(hdc: HDC, color: COLORREF) -> COLORREF;
-    // pub fn SetBkMode();
+    pub fn SetBkMode(hdc: HDC, iBkMode: c_int) -> c_int;
     // pub fn SetBoundsRect();
     // pub fn SetBrushOrgEx();
     // pub fn SetColorAdjustment();

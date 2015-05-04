@@ -33,5 +33,13 @@ pub struct PALETTEENTRY {
     peBlue: ::BYTE,
     peFlags: ::BYTE
 }
+
+//1861
+// Backgound modes for GetBkMode, SetBkMode
+pub const TRANSPARENT: ::c_int = 1;
+pub const OPAQUE: ::c_int = 2;
+pub const BKMODE_LAST: ::c_int = 2;
+
+
 //3581
 pub type LINEDDAPROC = Option<unsafe extern "system" fn(::c_int, ::c_int, ::LPARAM)>;
