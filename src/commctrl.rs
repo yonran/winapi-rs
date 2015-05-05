@@ -23,8 +23,20 @@ pub const ICC_NATIVEFNTCTL_CLASS: ::DWORD = 0x00002000;   // native font control
 pub const ICC_STANDARD_CLASSES: ::DWORD = 0x00004000;
 pub const ICC_LINK_CLASS: ::DWORD = 0x00008000;
 
+//176
+pub const LVM_FIRST: ::UINT = 0x1000;      // ListView messages
+pub const TV_FIRST:  ::UINT = 0x1100;      // TreeView messages
+pub const HDM_FIRST: ::UINT = 0x1200;      // Header messages
+pub const TCM_FIRST: ::UINT = 0x1300;      // Tab control messages
+pub const PGM_FIRST: ::UINT = 0x1400;      // Pager control messages
+pub const ECM_FIRST: ::UINT = 0x1500;      // Edit control messages
+pub const BCM_FIRST: ::UINT = 0x1600;      // Button control messages
+pub const CBM_FIRST: ::UINT = 0x1700;      // Combobox control messages
+pub const CCM_FIRST: ::UINT = 0x2000;      // Common control shared messages
+pub const CCM_LAST:  ::UINT = (CCM_FIRST + 0x200);
+
 //330
-// WM_NOTIFY codes (::c_int.code)
+// WM_NOTIFY codes (NMHDR.code)
 pub const NM_FIRST:   ::UINT = 0; // generic to all controls
 pub const NM_LAST:    ::UINT = 0xffffff9d;  // 0-99
 pub const LVN_FIRST:  ::UINT = 0xffffff9c;  // 0-100 listview
@@ -181,7 +193,7 @@ pub const LVS_NOCOLUMNHEADER: ::DWORD = 0x4000;
 pub const LVS_NOSORTHEADER: ::DWORD = 0x8000;
 
 //3140
-// List View Item Flags: flags for LVITEMW::mask
+// List View Item Field: for LVITEMW.mask
 pub const LVIF_TEXT: ::UINT = 0x00000001;
 pub const LVIF_IMAGE: ::UINT = 0x00000002;
 pub const LVIF_PARAM: ::UINT = 0x00000004;
@@ -314,7 +326,6 @@ impl ::std::default::Default for LVCOLUMNW {
 }
 
 
-pub const LVM_FIRST: ::UINT = 0x1000;      // ListView messages
 pub const LVM_GETITEMCOUNT: ::UINT = (LVM_FIRST + 4);  // returns c_int
 pub const LVM_GETITEMA: ::UINT = (LVM_FIRST + 5);  // *mut LVITEMA in lParam
 pub const LVM_GETITEMW: ::UINT = (LVM_FIRST + 75);  // *mut LVITEMW in lParam
@@ -351,7 +362,7 @@ pub const LVM_EDITLABELW: ::UINT = (LVM_FIRST + 118);
 pub const LVM_GETEDITCONTROL: ::UINT = (LVM_FIRST + 24);
 
 //3563
-// List View Column Flags in LVCOLUMN::mask
+// List View Column Fields in LVCOLUMN.mask
 pub const LVCF_FMT: ::UINT = 0x0001;
 pub const LVCF_WIDTH: ::UINT = 0x0002;
 pub const LVCF_TEXT: ::UINT = 0x0004;
@@ -457,7 +468,7 @@ pub const LVN_GETDISPINFOA: ::UINT = (LVN_FIRST-50);
 pub const LVN_GETDISPINFOW: ::UINT = (LVN_FIRST-77);
 pub const LVN_SETDISPINFOA: ::UINT = (LVN_FIRST-51);
 pub const LVN_SETDISPINFOW: ::UINT = (LVN_FIRST-78);
-// LVITEM::mask
+// LVITEM.mask
 pub const LVIF_DI_SETITEM: ::UINT = 0x1000;
 
 //4619
@@ -637,7 +648,7 @@ struct _TREEITEM {do_not_construct: ::std::marker::PhantomData<()>}
 pub type HTREEITEM = *const _TREEITEM;
 
 //4834
-// Tree View control Item Flags (TVITEMEXW::mask)
+// Tree View control Item Fields (TVITEMEXW.mask)
 pub const TVIF_TEXT: ::UINT = 0x0001;
 pub const TVIF_IMAGE: ::UINT = 0x0002;
 pub const TVIF_PARAM: ::UINT = 0x0004;
@@ -709,6 +720,340 @@ pub struct TVINSERTSTRUCTW {
 	pub hInsertAfter: HTREEITEM,
 	pub itemex: TVITEMEXW,
 }
-pub const TV_FIRST: ::UINT = 0x1100;
-pub const TVM_INSERTITEMA: ::UINT = 0x1100;  // *const TVINSERTSTRUCTA in lParam
+pub const TVM_INSERTITEMA: ::UINT = (TV_FIRST + 0);  // *const TVINSERTSTRUCTA in lParam
 pub const TVM_INSERTITEMW: ::UINT = (TV_FIRST + 50);  // *const TVINSERTSTRUCTW in lParam
+pub const TVM_DELETEITEM: ::UINT = (TV_FIRST + 1);  // *const TVINSERTSTRUCTW in lParam
+//5135
+pub const TVM_GETITEMA: ::UINT = (TV_FIRST + 12);
+pub const TVM_GETITEMW: ::UINT = (TV_FIRST + 62);
+
+
+
+
+//5892
+// Tab Control Styles
+pub const TCS_SCROLLOPPOSITE: ::DWORD = 0x0001; // assumes multiline tab
+pub const TCS_BOTTOM: ::DWORD = 0x0002;
+pub const TCS_RIGHT: ::DWORD = 0x0002;
+pub const TCS_MULTISELECT: ::DWORD = 0x0004; // allow multi-select in button mode
+pub const TCS_FLATBUTTONS: ::DWORD = 0x0008;
+pub const TCS_FORCEICONLEFT: ::DWORD = 0x0010;
+pub const TCS_FORCELABELLEFT: ::DWORD = 0x0020;
+pub const TCS_HOTTRACK: ::DWORD = 0x0040;
+pub const TCS_VERTICAL: ::DWORD = 0x0080;
+pub const TCS_TABS: ::DWORD = 0x0000;
+pub const TCS_BUTTONS: ::DWORD = 0x0100;
+pub const TCS_SINGLELINE: ::DWORD = 0x0000;
+pub const TCS_MULTILINE: ::DWORD = 0x0200;
+pub const TCS_RIGHTJUSTIFY: ::DWORD = 0x0000;
+pub const TCS_FIXEDWIDTH: ::DWORD = 0x0400;
+pub const TCS_RAGGEDRIGHT: ::DWORD = 0x0800;
+pub const TCS_FOCUSONBUTTONDOWN: ::DWORD = 0x1000;
+pub const TCS_OWNERDRAWFIXED: ::DWORD = 0x2000;
+pub const TCS_TOOLTIPS: ::DWORD = 0x4000;
+pub const TCS_FOCUSNEVER: ::DWORD = 0x8000;
+
+// EX styles for use with TCM_SETEXTENDEDSTYLE
+pub const TCS_EX_FLATSEPARATORS: ::DWORD = 0x00000001;
+pub const TCS_EX_REGISTERDROP: ::DWORD = 0x00000002;
+
+pub const TCM_GETIMAGELIST: ::UINT = (TCM_FIRST + 2);
+/*
+#define TabCtrl_GetImageList(hwnd) \
+    (HIMAGELIST)SNDMSG((hwnd), TCM_GETIMAGELIST, 0, 0L)
+*/
+
+pub const TCM_SETIMAGELIST: ::UINT = (TCM_FIRST + 3);
+/*
+#define TabCtrl_SetImageList(hwnd, himl) \
+    (HIMAGELIST)SNDMSG((hwnd), TCM_SETIMAGELIST, 0, (LPARAM)(HIMAGELIST)(himl))
+*/
+
+pub const TCM_GETITEMCOUNT: ::UINT = (TCM_FIRST + 4);
+/*
+#define TabCtrl_GetItemCount(hwnd) \
+    (int)SNDMSG((hwnd), TCM_GETITEMCOUNT, 0, 0L)
+*/
+
+// Tab Control Item Field (TCITEM.mask)
+pub const TCIF_TEXT: ::UINT = 0x0001;
+pub const TCIF_IMAGE: ::UINT = 0x0002;
+pub const TCIF_RTLREADING: ::UINT = 0x0004;
+pub const TCIF_PARAM: ::UINT = 0x0008;
+pub const TCIF_STATE: ::UINT = 0x0010;
+
+// Tab Control Item State (TCITEM.state)
+pub const TCIS_BUTTONPRESSED: ::DWORD = 0x0001;
+pub const TCIS_HIGHLIGHTED: ::DWORD = 0x0002;
+
+
+pub type TC_ITEMHEADERA = TCITEMHEADERA;
+pub type TC_ITEMHEADERW = TCITEMHEADERW;
+
+#[repr(C)] #[derive(Copy, Clone, Debug)]
+pub struct TCITEMHEADERA {
+    pub mask: ::UINT,
+    pub lpReserved1: ::UINT,
+    pub lpReserved2: ::UINT,
+    pub pszText: ::LPSTR,
+    pub cchTextMax: ::c_int,
+    pub iImage: ::c_int,
+}
+pub type LPTCITEMHEADERA = *mut TCITEMHEADERA;
+
+#[repr(C)] #[derive(Copy, Clone, Debug)]
+pub struct TCITEMHEADERW {
+    pub mask: ::UINT,
+    pub lpReserved1: ::UINT,
+    pub lpReserved2: ::UINT,
+    pub pszText: ::LPWSTR,
+    pub cchTextMax: ::c_int,
+    pub iImage: ::c_int,
+}
+pub type LPTCITEMHEADERW = *mut TCITEMHEADERW;
+
+pub type TC_ITEMA = TCITEMA;
+pub type TC_ITEMW = TCITEMW;
+
+#[repr(C)] #[derive(Copy, Clone, Debug)]
+pub struct TCITEMA {
+    pub mask: ::UINT,
+    pub dwState: ::DWORD,
+    pub dwStateMask: ::DWORD,
+    pub pszText: ::LPSTR,
+    pub cchTextMax: ::c_int,
+    pub iImage: ::c_int,
+
+    pub lParam: ::LPARAM,
+}
+pub type LPTCITEMA = *mut TCITEMA;
+// make it easier to construct: LVITEMA {<interesting fields>, ..Default::default()}
+impl ::std::default::Default for TCITEMA {
+	fn default () -> TCITEMA {
+		TCITEMA {
+			mask:0, dwState:0, dwStateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, lParam:0,
+		}
+	}
+}
+
+#[repr(C)] #[derive(Copy, Clone, Debug)]
+pub struct TCITEMW {
+    pub mask: ::UINT,
+    pub dwState: ::DWORD,
+    pub dwStateMask: ::DWORD,
+    pub pszText: ::LPWSTR,
+    pub cchTextMax: ::c_int,
+    pub iImage: ::c_int,
+
+    pub lParam: ::LPARAM,
+}
+pub type LPTCITEMW = *mut TCITEMW;
+// make it easier to construct: LVITEMA {<interesting fields>, ..Default::default()}
+impl ::std::default::Default for TCITEMW {
+	fn default () -> TCITEMW {
+		TCITEMW {
+			mask:0, dwState:0, dwStateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, lParam:0,
+		}
+	}
+}
+
+
+pub const TCM_GETITEMA: ::UINT = (TCM_FIRST + 5);
+pub const TCM_GETITEMW: ::UINT = (TCM_FIRST + 60);
+
+/*
+#define TabCtrl_GetItem(hwnd, iItem, pitem) \
+    (BOOL)SNDMSG((hwnd), TCM_GETITEM, (WPARAM)(int)(iItem), (LPARAM)(TC_ITEM *)(pitem))
+*/
+
+pub const TCM_SETITEMA: ::UINT = (TCM_FIRST + 6);
+pub const TCM_SETITEMW: ::UINT = (TCM_FIRST + 61);
+
+/*
+#define TabCtrl_SetItem(hwnd, iItem, pitem) \
+    (BOOL)SNDMSG((hwnd), TCM_SETITEM, (WPARAM)(int)(iItem), (LPARAM)(TC_ITEM *)(pitem))
+*/
+
+pub const TCM_INSERTITEMA: ::UINT = (TCM_FIRST + 7);
+pub const TCM_INSERTITEMW: ::UINT = (TCM_FIRST + 62);
+
+/*
+#define TabCtrl_InsertItem(hwnd, iItem, pitem)   \
+    (int)SNDMSG((hwnd), TCM_INSERTITEM, (WPARAM)(int)(iItem), (LPARAM)(const TC_ITEM *)(pitem))
+*/
+
+pub const TCM_DELETEITEM: ::UINT = (TCM_FIRST + 8);
+/*
+#define TabCtrl_DeleteItem(hwnd, i) \
+    (BOOL)SNDMSG((hwnd), TCM_DELETEITEM, (WPARAM)(int)(i), 0L)
+*/
+
+pub const TCM_DELETEALLITEMS: ::UINT = (TCM_FIRST + 9);
+/*
+#define TabCtrl_DeleteAllItems(hwnd) \
+    (BOOL)SNDMSG((hwnd), TCM_DELETEALLITEMS, 0, 0L)
+*/
+
+pub const TCM_GETITEMRECT: ::UINT = (TCM_FIRST + 10);
+/*
+#define TabCtrl_GetItemRect(hwnd, i, prc) \
+    (BOOL)SNDMSG((hwnd), TCM_GETITEMRECT, (WPARAM)(int)(i), (LPARAM)(RECT *)(prc))
+*/
+
+pub const TCM_GETCURSEL: ::UINT = (TCM_FIRST + 11);
+/*
+#define TabCtrl_GetCurSel(hwnd) \
+    (int)SNDMSG((hwnd), TCM_GETCURSEL, 0, 0)
+*/
+
+pub const TCM_SETCURSEL: ::UINT = (TCM_FIRST + 12);
+/*
+#define TabCtrl_SetCurSel(hwnd, i) \
+    (int)SNDMSG((hwnd), TCM_SETCURSEL, (WPARAM)(i), 0)
+*/
+
+// Tab Control Hit Test (TCHITTESTINFO.flags)
+pub const TCHT_NOWHERE: ::UINT = 0x0001;
+pub const TCHT_ONITEMICON: ::UINT = 0x0002;
+pub const TCHT_ONITEMLABEL: ::UINT = 0x0004;
+pub const TCHT_ONITEM: ::UINT = (TCHT_ONITEMICON | TCHT_ONITEMLABEL);
+
+pub type LPTC_HITTESTINFO = LPTCHITTESTINFO;
+pub type TC_HITTESTINFO = TCHITTESTINFO;
+
+#[repr(C)] #[derive(Copy, Clone, Debug)]
+pub struct TCHITTESTINFO {
+    pub pt: ::POINT,
+    pub flags: ::UINT,
+}
+pub type LPTCHITTESTINFO = *mut TCHITTESTINFO;
+
+pub const TCM_HITTEST: ::UINT = (TCM_FIRST + 13);
+/*
+#define TabCtrl_HitTest(hwndTC, pinfo) \
+    (int)SNDMSG((hwndTC), TCM_HITTEST, 0, (LPARAM)(TC_HITTESTINFO *)(pinfo))
+*/
+
+pub const TCM_SETITEMEXTRA: ::UINT = (TCM_FIRST + 14);
+/*
+#define TabCtrl_SetItemExtra(hwndTC, cb) \
+    (BOOL)SNDMSG((hwndTC), TCM_SETITEMEXTRA, (WPARAM)(cb), 0L)
+*/
+
+pub const TCM_ADJUSTRECT: ::UINT = (TCM_FIRST + 40);
+/*
+#define TabCtrl_AdjustRect(hwnd, bLarger, prc) \
+    (int)SNDMSG(hwnd, TCM_ADJUSTRECT, (WPARAM)(BOOL)(bLarger), (LPARAM)(RECT *)(prc))
+*/
+
+pub const TCM_SETITEMSIZE: ::UINT = (TCM_FIRST + 41);
+/*
+#define TabCtrl_SetItemSize(hwnd, x, y) \
+    (DWORD)SNDMSG((hwnd), TCM_SETITEMSIZE, 0, MAKELPARAM(x,y))
+*/
+
+pub const TCM_REMOVEIMAGE: ::UINT = (TCM_FIRST + 42);
+/*
+#define TabCtrl_RemoveImage(hwnd, i) \
+        (void)SNDMSG((hwnd), TCM_REMOVEIMAGE, i, 0L)
+*/
+
+pub const TCM_SETPADDING: ::UINT = (TCM_FIRST + 43);
+/*
+#define TabCtrl_SetPadding(hwnd,  cx, cy) \
+        (void)SNDMSG((hwnd), TCM_SETPADDING, 0, MAKELPARAM(cx, cy))
+*/
+
+
+pub const TCM_GETROWCOUNT: ::UINT = (TCM_FIRST + 44);
+/*
+#define TabCtrl_GetRowCount(hwnd) \
+        (int)SNDMSG((hwnd), TCM_GETROWCOUNT, 0, 0L)
+*/
+
+
+pub const TCM_GETTOOLTIPS: ::UINT = (TCM_FIRST + 45);
+/*
+#define TabCtrl_GetToolTips(hwnd) \
+        (HWND)SNDMSG((hwnd), TCM_GETTOOLTIPS, 0, 0L)
+*/
+
+
+pub const TCM_SETTOOLTIPS: ::UINT = (TCM_FIRST + 46);
+/*
+#define TabCtrl_SetToolTips(hwnd, hwndTT) \
+        (void)SNDMSG((hwnd), TCM_SETTOOLTIPS, (WPARAM)(hwndTT), 0L)
+*/
+
+
+pub const TCM_GETCURFOCUS: ::UINT = (TCM_FIRST + 47);
+/*
+#define TabCtrl_GetCurFocus(hwnd) \
+    (int)SNDMSG((hwnd), TCM_GETCURFOCUS, 0, 0)
+*/
+
+pub const TCM_SETCURFOCUS: ::UINT = (TCM_FIRST + 48);
+/*
+#define TabCtrl_SetCurFocus(hwnd, i) \
+    SNDMSG((hwnd),TCM_SETCURFOCUS, i, 0)
+*/
+
+pub const TCM_SETMINTABWIDTH: ::UINT = (TCM_FIRST + 49);
+/*
+#define TabCtrl_SetMinTabWidth(hwnd, x) \
+        (int)SNDMSG((hwnd), TCM_SETMINTABWIDTH, 0, x)
+*/
+
+
+pub const TCM_DESELECTALL: ::UINT = (TCM_FIRST + 50);
+/*
+#define TabCtrl_DeselectAll(hwnd, fExcludeFocus)\
+        (void)SNDMSG((hwnd), TCM_DESELECTALL, fExcludeFocus, 0)
+*/
+
+pub const TCM_HIGHLIGHTITEM: ::UINT = (TCM_FIRST + 51);
+/*
+#define TabCtrl_HighlightItem(hwnd, i, fHighlight) \
+    (BOOL)SNDMSG((hwnd), TCM_HIGHLIGHTITEM, (WPARAM)(i), (LPARAM)MAKELONG (fHighlight, 0))
+*/
+
+pub const TCM_SETEXTENDEDSTYLE: ::UINT = (TCM_FIRST + 52)  ;// optional wParam == mask
+/*
+#define TabCtrl_SetExtendedStyle(hwnd, dw)\
+        (DWORD)SNDMSG((hwnd), TCM_SETEXTENDEDSTYLE, 0, dw)
+*/
+
+pub const TCM_GETEXTENDEDSTYLE: ::UINT = (TCM_FIRST + 53);
+/*
+#define TabCtrl_GetExtendedStyle(hwnd)\
+        (DWORD)SNDMSG((hwnd), TCM_GETEXTENDEDSTYLE, 0, 0)
+*/
+
+pub const TCM_SETUNICODEFORMAT: ::UINT = CCM_SETUNICODEFORMAT;
+/*
+#define TabCtrl_SetUnicodeFormat(hwnd, fUnicode)  \
+    (BOOL)SNDMSG((hwnd), TCM_SETUNICODEFORMAT, (WPARAM)(fUnicode), 0)
+*/
+
+pub const TCM_GETUNICODEFORMAT: ::UINT = CCM_GETUNICODEFORMAT;
+/*
+#define TabCtrl_GetUnicodeFormat(hwnd)  \
+    (BOOL)SNDMSG((hwnd), TCM_GETUNICODEFORMAT, 0, 0)
+*/
+
+
+pub const TCN_KEYDOWN: ::UINT = (TCN_FIRST - 0);
+
+pub type TC_KEYDOWN = NMTCKEYDOWN;
+
+#[repr(C, packed)] #[derive(Copy, Clone, Debug)]
+pub struct NMTCKEYDOWN {
+    pub hdr: ::NMHDR,
+    pub wVKey: ::WORD,
+    pub flags: ::UINT,
+}
+
+pub const TCN_SELCHANGE: ::UINT = (TCN_FIRST - 1);
+pub const TCN_SELCHANGING: ::UINT = (TCN_FIRST - 2);
+pub const TCN_GETOBJECT: ::UINT = (TCN_FIRST - 3);
+pub const TCN_FOCUSCHANGE: ::UINT = (TCN_FIRST - 4);
