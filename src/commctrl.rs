@@ -1,8 +1,8 @@
 
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct INITCOMMONCONTROLSEX {
-	pub dwSize: ::DWORD,
-	pub dwICC: ::DWORD,
+    pub dwSize: ::DWORD,
+    pub dwICC: ::DWORD,
 }
 // Flags for INITCOMMONCONTROLSEX::dwICC
 pub const ICC_LISTVIEW_CLASSES: ::DWORD = 0x00000001; // enable WC_LISTVIEW and WC_HEADER
@@ -95,9 +95,9 @@ pub const ODT_LISTVIEW: ::DWORD = 102;
 pub const CCM_SETBKCOLOR: ::UINT = 0x2001;  // color in lParam
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct COLORSCHEME {
-	pub dwSize: ::DWORD,
-	pub clrBtnHighlight: ::COLORREF,
-	pub clrBtnShadow: ::COLORREF,
+    pub dwSize: ::DWORD,
+    pub clrBtnHighlight: ::COLORREF,
+    pub clrBtnShadow: ::COLORREF,
 }
 pub const CCM_SETCOLORSCHEME: ::UINT = 0x2002;  // &COLORSCHEME in lParam
 pub const CCM_GETCOLORSCHEME: ::UINT = 0x2003;  // &mut COLORSCHEME in lParam
@@ -108,6 +108,63 @@ pub const CCM_SETVERSION: ::UINT = 0x2007;
 pub const CCM_GETVERSION: ::UINT = 0x2008;
 pub const CCM_SETWINDOWTHEME: ::UINT = 0x200b;
 pub const CCM_DPISCALE: ::UINT = 0x200c;  // TRUE in wParam
+
+//458
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMCUSTOMDRAW {
+    pub hdr: ::NMHDR,
+    pub dwDrawStage: ::DWORD,
+    pub hdc: ::HDC,
+    pub rc: ::RECT,
+    pub dwItemSpec: ::DWORD_PTR,  // this is control specific, but it's how to specify an item.  valid only with CDDS_ITEM bit set
+    pub uItemState: ::UINT,
+    pub lItemlParam: ::LPARAM,
+}
+pub type LPNMCUSTOMDRAW = *mut NMCUSTOMDRAW;
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTTCUSTOMDRAW {
+    pub nmcd: NMCUSTOMDRAW,
+    pub uDrawFlags: ::UINT,
+}
+pub type LPNMTTCUSTOMDRAW = *mut NMTTCUSTOMDRAW;
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMCUSTOMSPLITRECTINFO {
+    pub hdr: ::NMHDR,
+    pub rcClient: ::RECT,
+    pub rcButton: ::RECT,
+    pub rcSplit: ::RECT,
+}
+pub type LPNMCUSTOMSPLITRECTINFO = *mut NMCUSTOMSPLITRECTINFO;
+
+//494
+struct _IMAGELIST {do_not_construct: ::std::marker::PhantomData<()>}
+pub type HIMAGELIST = *const _IMAGELIST;
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct IMAGELISTDRAWPARAMS {
+    pub cbSize: ::DWORD,
+    pub himl: HIMAGELIST,
+    pub i: ::c_int,
+    pub hdcDst: ::HDC,
+    pub x: ::c_int,
+    pub y: ::c_int,
+    pub cx: ::c_int,
+    pub cy: ::c_int,
+    pub xBitmap: ::c_int,        // x offest from the upperleft of bitmap
+    pub yBitmap: ::c_int,        // y offset from the upperleft of bitmap
+    pub rgbBk: ::COLORREF,
+    pub rgbFg: ::COLORREF,
+    pub fStyle: ::UINT,
+    pub dwRop: ::DWORD,
+    // IE 5.01
+    pub fState: ::DWORD,
+    pub Frame: ::DWORD,
+    pub crEffect: ::COLORREF,
+}
+pub type LPIMAGELISTDRAWPARAMS = *mut IMAGELISTDRAWPARAMS;
+
+
 //2989
 pub const MAX_LINKID_TEXT: usize = 48;
 pub const L_MAX_URL_LENGTH: usize = (2048 + 32 + 3 /*sizeof("://") */);
@@ -220,109 +277,109 @@ pub const LVIS_STATEIMAGEMASK: ::UINT = 0xF000;
 //3191
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct LVITEMA {
-	pub mask: ::UINT,
-	pub iItem: ::c_int,
-	pub iSubItem: ::c_int,
-	pub state: ::UINT,
-	pub stateMask: ::UINT,
-	pub pszText: ::LPSTR,
-	pub cchTextMax: ::c_int,
-	pub iImage: ::c_int,
-	pub lParam: ::LPARAM,
-	pub iIndent: ::c_int,
-	// XP
-	pub iGroupId: ::c_int,
-	pub cColumns: ::UINT, // tile view columns
-	pub puColumns: ::PUINT,
-	// Vista
-	pub piColFmt: *mut ::c_int,
-	pub iGroup: ::c_int, // readonly. only valid for owner data.
+    pub mask: ::UINT,
+    pub iItem: ::c_int,
+    pub iSubItem: ::c_int,
+    pub state: ::UINT,
+    pub stateMask: ::UINT,
+    pub pszText: ::LPSTR,
+    pub cchTextMax: ::c_int,
+    pub iImage: ::c_int,
+    pub lParam: ::LPARAM,
+    pub iIndent: ::c_int,
+    // XP
+    pub iGroupId: ::c_int,
+    pub cColumns: ::UINT, // tile view columns
+    pub puColumns: ::PUINT,
+    // Vista
+    pub piColFmt: *mut ::c_int,
+    pub iGroup: ::c_int, // readonly. only valid for owner data.
 }
 pub type LPLVITEMA = *mut LVITEMA;
 // make it easier to construct: LVITEMA {<interesting fields>, ..Default::default()}
 impl ::std::default::Default for LVITEMA {
-	fn default () -> LVITEMA {
-		LVITEMA {
-			mask:0, iItem: 0, iSubItem:0, state:0, stateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, lParam:0, iIndent:0, iGroupId:0, cColumns:0, puColumns: ::std::ptr::null_mut(), piColFmt: ::std::ptr::null_mut(), iGroup:0
-		}
-	}
+    fn default () -> LVITEMA {
+        LVITEMA {
+            mask:0, iItem: 0, iSubItem:0, state:0, stateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, lParam:0, iIndent:0, iGroupId:0, cColumns:0, puColumns: ::std::ptr::null_mut(), piColFmt: ::std::ptr::null_mut(), iGroup:0
+        }
+    }
 }
 
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct LVITEMW {
-	pub mask: ::UINT,
-	pub iItem: ::c_int,
-	pub iSubItem: ::c_int,
-	pub state: ::UINT,
-	pub stateMask: ::UINT,
-	pub pszText: ::LPWSTR,
-	pub cchTextMax: ::c_int,
-	pub iImage: ::c_int,
-	pub lParam: ::LPARAM,
-	pub iIndent: ::c_int,
-	// XP
-	pub iGroupId: ::c_int,
-	pub cColumns: ::UINT, // tile view columns
-	pub puColumns: ::PUINT,
-	// Vista
-	pub piColFmt: *mut ::c_int,
-	pub iGroup: ::c_int, // readonly. only valid for owner data.
+    pub mask: ::UINT,
+    pub iItem: ::c_int,
+    pub iSubItem: ::c_int,
+    pub state: ::UINT,
+    pub stateMask: ::UINT,
+    pub pszText: ::LPWSTR,
+    pub cchTextMax: ::c_int,
+    pub iImage: ::c_int,
+    pub lParam: ::LPARAM,
+    pub iIndent: ::c_int,
+    // XP
+    pub iGroupId: ::c_int,
+    pub cColumns: ::UINT, // tile view columns
+    pub puColumns: ::PUINT,
+    // Vista
+    pub piColFmt: *mut ::c_int,
+    pub iGroup: ::c_int, // readonly. only valid for owner data.
 }
 pub type LPLVITEMW = *mut LVITEMW;
 // make it easier to construct: LVITEMW {<interesting fields>, ..Default::default()}
 impl ::std::default::Default for LVITEMW {
-	fn default () -> LVITEMW {
-		LVITEMW {
-			mask:0, iItem: 0, iSubItem:0, state:0, stateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, lParam:0, iIndent:0, iGroupId:0, cColumns:0, puColumns: ::std::ptr::null_mut(), piColFmt: ::std::ptr::null_mut(), iGroup:0
-		}
-	}
+    fn default () -> LVITEMW {
+        LVITEMW {
+            mask:0, iItem: 0, iSubItem:0, state:0, stateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, lParam:0, iIndent:0, iGroupId:0, cColumns:0, puColumns: ::std::ptr::null_mut(), piColFmt: ::std::ptr::null_mut(), iGroup:0
+        }
+    }
 }
 
 //3518
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct LVCOLUMNA {
-	pub mask: ::UINT,
-	pub fmt: ::c_int,
-	pub cx: ::c_int,
-	pub pszText: ::LPSTR,
-	pub cchTextMax: ::c_int,
-	pub iSubItem: ::c_int,
-	pub iImage: ::c_int,
-	pub iOrder: ::c_int,
-	// vista
-	pub cxMin: ::c_int,       // min snap point
-	pub cxDefault: ::c_int,   // default snap point
-	pub cxIdeal: ::c_int,     // read only. ideal may not eqaul current width if auto sized (LVS_EX_AUTOSIZECOLUMNS) to a lesser width.
+    pub mask: ::UINT,
+    pub fmt: ::c_int,
+    pub cx: ::c_int,
+    pub pszText: ::LPSTR,
+    pub cchTextMax: ::c_int,
+    pub iSubItem: ::c_int,
+    pub iImage: ::c_int,
+    pub iOrder: ::c_int,
+    // vista
+    pub cxMin: ::c_int,       // min snap point
+    pub cxDefault: ::c_int,   // default snap point
+    pub cxIdeal: ::c_int,     // read only. ideal may not eqaul current width if auto sized (LVS_EX_AUTOSIZECOLUMNS) to a lesser width.
 }
 pub type LPLVCOLUMNA = *mut LVCOLUMNA;
 // make it easier to construct: LVCOLUMNA {<interesting fields>, ..Default::default()}
 impl ::std::default::Default for LVCOLUMNA {
-	fn default () -> LVCOLUMNA {
-		LVCOLUMNA {mask:0, fmt:0, cx:0, pszText: ::std::ptr::null_mut(),cchTextMax:0, iSubItem:0, iImage:0, iOrder:0, cxMin:0, cxDefault:0, cxIdeal:0}
-	}
+    fn default () -> LVCOLUMNA {
+        LVCOLUMNA {mask:0, fmt:0, cx:0, pszText: ::std::ptr::null_mut(),cchTextMax:0, iSubItem:0, iImage:0, iOrder:0, cxMin:0, cxDefault:0, cxIdeal:0}
+    }
 }
 
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct LVCOLUMNW {
-	pub mask: ::UINT,
-	pub fmt: ::c_int,
-	pub cx: ::c_int,
-	pub pszText: ::LPWSTR,
-	pub cchTextMax: ::c_int,
-	pub iSubItem: ::c_int,
-	pub iImage: ::c_int,
-	pub iOrder: ::c_int,
-	// vista
-	pub cxMin: ::c_int,       // min snap point
-	pub cxDefault: ::c_int,   // default snap point
-	pub cxIdeal: ::c_int,     // read only. ideal may not eqaul current width if auto sized (LVS_EX_AUTOSIZECOLUMNS) to a lesser width.
+    pub mask: ::UINT,
+    pub fmt: ::c_int,
+    pub cx: ::c_int,
+    pub pszText: ::LPWSTR,
+    pub cchTextMax: ::c_int,
+    pub iSubItem: ::c_int,
+    pub iImage: ::c_int,
+    pub iOrder: ::c_int,
+    // vista
+    pub cxMin: ::c_int,       // min snap point
+    pub cxDefault: ::c_int,   // default snap point
+    pub cxIdeal: ::c_int,     // read only. ideal may not eqaul current width if auto sized (LVS_EX_AUTOSIZECOLUMNS) to a lesser width.
 }
 pub type LPLVCOLUMNW = *mut LVCOLUMNW;
 // make it easier to construct: LVCOLUMNW {<interesting fields>, ..Default::default()}
 impl ::std::default::Default for LVCOLUMNW {
-	fn default () -> LVCOLUMNW {
-		LVCOLUMNW {mask:0, fmt:0, cx:0, pszText: ::std::ptr::null_mut(),cchTextMax:0, iSubItem:0, iImage:0, iOrder:0, cxMin:0, cxDefault:0, cxIdeal:0}
-	}
+    fn default () -> LVCOLUMNW {
+        LVCOLUMNW {mask:0, fmt:0, cx:0, pszText: ::std::ptr::null_mut(),cchTextMax:0, iSubItem:0, iImage:0, iOrder:0, cxMin:0, cxDefault:0, cxIdeal:0}
+    }
 }
 
 
@@ -681,44 +738,107 @@ pub const TVIS_EX_DISABLED: ::UINT = 0x0002;
 
 pub const TVIS_EX_ALL: ::UINT = 0x0002;
 
+//4878
+pub type LPTV_ITEMW = LPTVITEMW;
+pub type LPTV_ITEMA = LPTVITEMA;
+pub type TV_ITEMW = TVITEMW;
+pub type TV_ITEMA = TVITEMA;
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct TVITEMA {
+    pub mask: ::UINT,
+    pub hItem: HTREEITEM,
+    pub state: ::UINT,
+    pub stateMask: ::UINT,
+    pub pszText: ::LPSTR,
+    pub cchTextMax: ::c_int,
+    pub iImage: ::c_int,
+    pub iSelectedImage: ::c_int,
+    pub cChildren: ::c_int,
+    pub lParam: ::LPARAM,
+}
+pub type LPTVITEMA = *mut TVITEMA;
+
+//4899
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct TVITEMW {
+    pub mask: ::UINT,
+    pub hItem: HTREEITEM,
+    pub state: ::UINT,
+    pub stateMask: ::UINT,
+    pub pszText: ::LPWSTR,
+    pub cchTextMax: ::c_int,
+    pub iImage: ::c_int,
+    pub iSelectedImage: ::c_int,
+    pub cChildren: ::c_int,
+    pub lParam: ::LPARAM,
+}
+pub type LPTVITEMW = *mut TVITEMW;
+
+// only used for Get and Set messages.  no notifies
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct TVITEMEXA {
+    pub mask: ::UINT,
+    pub hItem: HTREEITEM,
+    pub state: ::UINT,
+    pub stateMask: ::UINT,
+    pub pszText: ::LPSTR,
+    pub cchTextMax: ::c_int,
+    pub iImage: ::c_int,
+    pub iSelectedImage: ::c_int,
+    pub cChildren: ::c_int,
+    pub lParam: ::LPARAM,
+    pub iIntegral: ::c_int,
+    // IE 6
+    pub uStateEx: ::UINT,
+    pub hwnd: ::HWND,
+    pub iExpandedImage: ::c_int,
+    // Win 7
+    pub iReserved: ::c_int,
+}
+pub type LPTVITEMEXA = *mut TVITEMEXA;
+// only used for Get and Set messages.  no notifies
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct TVITEMEXW {
-	pub mask: ::UINT,
-	pub hItem: HTREEITEM,
-	pub state: ::UINT,
-	pub stateMask: ::UINT,
-	pub pszText: ::LPCWSTR,
-	pub cchTextMax: ::c_int,
-	pub iImage: ::c_int,
-	pub iSelectedImage: ::c_int,
-	pub cChildren: ::c_int,
-	pub lParam: ::LPARAM,
-	pub iIntegral: ::c_int,
-	// IE 6
-	pub uStateEx: ::UINT,
-	pub hwnd: ::HWND,
-	pub iExpandedImage: ::c_int,
-	// Win7
-	pub iReserved: ::c_int,
+    pub mask: ::UINT,
+    pub hItem: HTREEITEM,
+    pub state: ::UINT,
+    pub stateMask: ::UINT,
+    pub pszText: ::LPWSTR,
+    pub cchTextMax: ::c_int,
+    pub iImage: ::c_int,
+    pub iSelectedImage: ::c_int,
+    pub cChildren: ::c_int,
+    pub lParam: ::LPARAM,
+    pub iIntegral: ::c_int,
+    // IE 6
+    pub uStateEx: ::UINT,
+    pub hwnd: ::HWND,
+    pub iExpandedImage: ::c_int,
+    // Win 7
+    pub iReserved: ::c_int,
 }
+pub type LPTVITEMEXW = *mut TVITEMEXW;
 // make it easier to construct: TVITEMEXW {<interesting fields>, ..Default::default()}
 impl ::std::default::Default for TVITEMEXW {
-	fn default () -> TVITEMEXW {
-		TVITEMEXW {mask:0, hItem: ::std::ptr::null(), state:0, stateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, iSelectedImage:0, cChildren:0, lParam:0, iIntegral:0, uStateEx:0, hwnd: ::std::ptr::null_mut(), iExpandedImage:0, iReserved:0}
-	}
+    fn default () -> TVITEMEXW {
+        TVITEMEXW {mask:0, hItem: ::std::ptr::null(), state:0, stateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, iSelectedImage:0, cChildren:0, lParam:0, iIntegral:0, uStateEx:0, hwnd: ::std::ptr::null_mut(), iExpandedImage:0, iReserved:0}
+    }
 }
 
+//4973
 pub const TVI_ROOT: HTREEITEM = -0x10000 as isize as HTREEITEM;
 pub const TVI_FIRST: HTREEITEM = -0x0FFFF as isize as HTREEITEM;
 pub const TVI_LAST: HTREEITEM = -0x0FFFE as isize as HTREEITEM;
 pub const TVI_SORT: HTREEITEM = -0x0FFFD as isize as HTREEITEM;
 
+
 //5000
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct TVINSERTSTRUCTW {
-	pub hParent: HTREEITEM,
-	pub hInsertAfter: HTREEITEM,
-	pub itemex: TVITEMEXW,
+    pub hParent: HTREEITEM,
+    pub hInsertAfter: HTREEITEM,
+    pub itemex: TVITEMEXW,
 }
 pub const TVM_INSERTITEMA: ::UINT = (TV_FIRST + 0);  // *const TVINSERTSTRUCTA in lParam
 pub const TVM_INSERTITEMW: ::UINT = (TV_FIRST + 50);  // *const TVINSERTSTRUCTW in lParam
@@ -727,6 +847,183 @@ pub const TVM_DELETEITEM: ::UINT = (TV_FIRST + 1);  // *const TVINSERTSTRUCTW in
 pub const TVM_GETITEMA: ::UINT = (TV_FIRST + 12);
 pub const TVM_GETITEMW: ::UINT = (TV_FIRST + 62);
 
+//5434
+pub type LPNM_TREEVIEWA = LPNMTREEVIEWA;
+pub type LPNM_TREEVIEWW = LPNMTREEVIEWW;
+pub type NM_TREEVIEWW = NMTREEVIEWW;
+pub type NM_TREEVIEWA = NMTREEVIEWA;
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTREEVIEWA {
+    pub hdr: ::NMHDR,
+    pub action: ::UINT,
+    pub itemOld: TVITEMA,
+    pub itemNew: TVITEMA,
+    pub ptDrag: ::POINT,
+}
+pub type LPNMTREEVIEWA = *mut NMTREEVIEWA;
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTREEVIEWW {
+    pub hdr: ::NMHDR,
+    pub action: ::UINT,
+    pub itemOld: TVITEMW,
+    pub itemNew: TVITEMW,
+    pub ptDrag: ::POINT,
+}
+pub type LPNMTREEVIEWW = *mut NMTREEVIEWW;
+
+pub const TVN_SELCHANGINGA: ::UINT = (TVN_FIRST-1);
+pub const TVN_SELCHANGINGW: ::UINT = (TVN_FIRST-50);
+pub const TVN_SELCHANGEDA: ::UINT = (TVN_FIRST-2);
+pub const TVN_SELCHANGEDW: ::UINT = (TVN_FIRST-51);
+
+// NMTREEVIEW.action reason that a TVN_SELCHANGED occurred
+pub const TVC_UNKNOWN: ::UINT = 0x0000;
+pub const TVC_BYMOUSE: ::UINT = 0x0001;
+pub const TVC_BYKEYBOARD: ::UINT = 0x0002;
+
+pub const TVN_GETDISPINFOA: ::UINT = (TVN_FIRST-3);
+pub const TVN_GETDISPINFOW: ::UINT = (TVN_FIRST-52);
+pub const TVN_SETDISPINFOA: ::UINT = (TVN_FIRST-4);
+pub const TVN_SETDISPINFOW: ::UINT = (TVN_FIRST-53);
+
+pub const TVIF_DI_SETITEM: ::UINT = 0x1000;
+
+pub type TV_DISPINFOA = NMTVDISPINFOA;
+pub type TV_DISPINFOW = NMTVDISPINFOW;
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTVDISPINFOA {
+    pub hdr: ::NMHDR,
+    pub item: TVITEMA,
+}
+pub type LPNMTVDISPINFOA = *mut NMTVDISPINFOA;
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTVDISPINFOW {
+    pub hdr: ::NMHDR,
+    pub item: TVITEMW,
+}
+pub type LPNMTVDISPINFOW = *mut NMTVDISPINFOW;
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTVDISPINFOEXA {
+    pub hdr: ::NMHDR,
+    pub item: TVITEMEXA,
+}
+pub type LPNMTVDISPINFOEXA = *mut NMTVDISPINFOEXA;
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTVDISPINFOEXW {
+    pub hdr: ::NMHDR,
+    pub item: TVITEMEXW,
+}
+pub type LPNMTVDISPINFOEXW = *mut NMTVDISPINFOEXW;
+
+
+pub type TV_DISPINFOEXA = NMTVDISPINFOEXA;
+pub type TV_DISPINFOEXW = NMTVDISPINFOEXW;
+
+pub const TVN_ITEMEXPANDINGA: ::UINT = (TVN_FIRST-5);
+pub const TVN_ITEMEXPANDINGW: ::UINT = (TVN_FIRST-54);
+pub const TVN_ITEMEXPANDEDA: ::UINT = (TVN_FIRST-6);
+pub const TVN_ITEMEXPANDEDW: ::UINT = (TVN_FIRST-55);
+pub const TVN_BEGINDRAGA: ::UINT = (TVN_FIRST-7);
+pub const TVN_BEGINDRAGW: ::UINT = (TVN_FIRST-56);
+pub const TVN_BEGINRDRAGA: ::UINT = (TVN_FIRST-8);
+pub const TVN_BEGINRDRAGW: ::UINT = (TVN_FIRST-57);
+pub const TVN_DELETEITEMA: ::UINT = (TVN_FIRST-9);
+pub const TVN_DELETEITEMW: ::UINT = (TVN_FIRST-58);
+pub const TVN_BEGINLABELEDITA: ::UINT = (TVN_FIRST-10);
+pub const TVN_BEGINLABELEDITW: ::UINT = (TVN_FIRST-59);
+pub const TVN_ENDLABELEDITA: ::UINT = (TVN_FIRST-11);
+pub const TVN_ENDLABELEDITW: ::UINT = (TVN_FIRST-60);
+pub const TVN_KEYDOWN: ::UINT = (TVN_FIRST-12);
+
+pub const TVN_GETINFOTIPA: ::UINT = (TVN_FIRST-13);
+pub const TVN_GETINFOTIPW: ::UINT = (TVN_FIRST-14);
+pub const TVN_SINGLEEXPAND: ::UINT = (TVN_FIRST-15);
+
+// Tree View Notification Return values for TVN_SINGLEEXPAND
+pub const TVNRET_DEFAULT: ::LRESULT = 0;
+pub const TVNRET_SKIPOLD: ::LRESULT = 1;
+pub const TVNRET_SKIPNEW: ::LRESULT = 2;
+
+pub const TVN_ITEMCHANGINGA: ::UINT = (TVN_FIRST-16);
+pub const TVN_ITEMCHANGINGW: ::UINT = (TVN_FIRST-17);
+pub const TVN_ITEMCHANGEDA: ::UINT = (TVN_FIRST-18);
+pub const TVN_ITEMCHANGEDW: ::UINT = (TVN_FIRST-19);
+pub const TVN_ASYNCDRAW: ::UINT = (TVN_FIRST-20);
+
+pub type TV_KEYDOWN = NMTVKEYDOWN;
+
+#[repr(C, packed)] #[derive(Clone, Copy, Debug)]
+pub struct NMTVKEYDOWN {
+    pub hdr: ::NMHDR,
+    pub wVKey: ::WORD,
+    pub flags: ::UINT,
+}
+pub type LPNMTVKEYDOWN = *mut NMTVKEYDOWN;
+
+// size of NMTVCUSTOMDRAW, but only up to and including clrTextBk
+//#define NMTVCUSTOMDRAW_V3_SIZE CCSIZEOF_STRUCT(NMTVCUSTOMDRAW, clrTextBk)
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTVCUSTOMDRAW {
+    pub nmcd: NMCUSTOMDRAW,
+    pub clrText: ::COLORREF,
+    pub clrTextBk: ::COLORREF,
+    pub iLevel: ::c_int,
+}
+pub type LPNMTVCUSTOMDRAW = *mut NMTVCUSTOMDRAW;
+
+
+// for tooltips
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTVGETINFOTIPA {
+    pub hdr: ::NMHDR,
+    pub pszText: ::LPSTR,
+    pub cchTextMax: ::c_int,
+    pub hItem: HTREEITEM,
+    pub lParam: ::LPARAM,
+}
+pub type LPNMTVGETINFOTIPA = *mut NMTVGETINFOTIPA;
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTVGETINFOTIPW {
+    pub hdr: ::NMHDR,
+    pub pszText: ::LPWSTR,
+    pub cchTextMax: ::c_int,
+    pub hItem: HTREEITEM,
+    pub lParam: ::LPARAM,
+}
+pub type LPNMTVGETINFOTIPW = *mut NMTVGETINFOTIPW;
+
+// treeview's customdraw return meaning don't draw images.  valid on CDRF_NOTIFYITEMPREPAINT
+pub const TVCDRF_NOIMAGES: ::LRESULT = 0x00010000;
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTVITEMCHANGE {
+    pub hdr: ::NMHDR,
+    pub uChanged: ::UINT,
+    pub hItem: HTREEITEM,
+    pub uStateNew: ::UINT,
+    pub uStateOld: ::UINT,
+    pub lParam: ::LPARAM,
+}
+
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct NMTVASYNCDRAW {
+    pub hdr: ::NMHDR,
+    pub pimldp: *mut IMAGELISTDRAWPARAMS,    // the draw that failed
+    pub hr: ::HRESULT,                       // why it failed
+    pub hItem: HTREEITEM,                  // item that failed to draw icon
+    pub lParam: ::LPARAM,                    // its data
+    // Out Params
+    pub dwRetFlags: ::DWORD,                 // What listview should do on return
+    pub iRetImageIndex: ::c_int,               // used if ADRF_DRAWIMAGE is returned
+}
 
 
 
@@ -829,11 +1126,11 @@ pub struct TCITEMA {
 pub type LPTCITEMA = *mut TCITEMA;
 // make it easier to construct: LVITEMA {<interesting fields>, ..Default::default()}
 impl ::std::default::Default for TCITEMA {
-	fn default () -> TCITEMA {
-		TCITEMA {
-			mask:0, dwState:0, dwStateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, lParam:0,
-		}
-	}
+    fn default () -> TCITEMA {
+        TCITEMA {
+            mask:0, dwState:0, dwStateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, lParam:0,
+        }
+    }
 }
 
 #[repr(C)] #[derive(Copy, Clone, Debug)]
@@ -850,11 +1147,11 @@ pub struct TCITEMW {
 pub type LPTCITEMW = *mut TCITEMW;
 // make it easier to construct: LVITEMA {<interesting fields>, ..Default::default()}
 impl ::std::default::Default for TCITEMW {
-	fn default () -> TCITEMW {
-		TCITEMW {
-			mask:0, dwState:0, dwStateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, lParam:0,
-		}
-	}
+    fn default () -> TCITEMW {
+        TCITEMW {
+            mask:0, dwState:0, dwStateMask:0, pszText: ::std::ptr::null_mut(), cchTextMax:0, iImage:0, lParam:0,
+        }
+    }
 }
 
 
