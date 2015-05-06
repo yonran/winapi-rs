@@ -833,19 +833,77 @@ pub const TVI_LAST: HTREEITEM = -0x0FFFE as isize as HTREEITEM;
 pub const TVI_SORT: HTREEITEM = -0x0FFFD as isize as HTREEITEM;
 
 
-//5000
+//4990
+#[repr(C)] #[derive(Clone, Copy, Debug)]
+pub struct TVINSERTSTRUCTA {
+    pub hParent: HTREEITEM,
+    pub hInsertAfter: HTREEITEM,
+    pub itemex: TVITEMEXA,
+}
+pub type LPTVINSERTSTRUCTA = *mut TVINSERTSTRUCTA;
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct TVINSERTSTRUCTW {
     pub hParent: HTREEITEM,
     pub hInsertAfter: HTREEITEM,
     pub itemex: TVITEMEXW,
 }
+pub type LPTVINSERTSTRUCTW = *mut TVINSERTSTRUCTW;
 pub const TVM_INSERTITEMA: ::UINT = (TV_FIRST + 0);  // *const TVINSERTSTRUCTA in lParam
 pub const TVM_INSERTITEMW: ::UINT = (TV_FIRST + 50);  // *const TVINSERTSTRUCTW in lParam
 pub const TVM_DELETEITEM: ::UINT = (TV_FIRST + 1);  // *const TVINSERTSTRUCTW in lParam
+pub const TVM_EXPAND: ::UINT = (TV_FIRST + 2);
+
+//5046
+// Tree View Expand parameter of TVM_EXPAND message and action of TVN_ITEMEXPANDING/TVN_ITEMEXPANDED notifications
+pub const TVE_COLLAPSE: ::UINT = 0x0001;
+pub const TVE_EXPAND: ::UINT = 0x0002;
+pub const TVE_TOGGLE: ::UINT = 0x0003;
+pub const TVE_EXPANDPARTIAL: ::UINT = 0x4000;
+pub const TVE_COLLAPSERESET: ::UINT = 0x8000;
+
+//5053
+pub const TVM_GETITEMRECT: ::UINT = (TV_FIRST + 4);
+pub const TVM_GETCOUNT: ::UINT = (TV_FIRST + 5);
+pub const TVM_GETINDENT: ::UINT = (TV_FIRST + 6);
+pub const TVM_SETINDENT: ::UINT = (TV_FIRST + 7);
+pub const TVM_GETIMAGELIST: ::UINT = (TV_FIRST + 8);
+
+// Tree View Set Item List type
+pub const TVSIL_NORMAL: ::WPARAM = 0;
+pub const TVSIL_STATE: ::WPARAM = 2;
+pub const TVM_SETIMAGELIST: ::UINT = (TV_FIRST + 9);
+pub const TVM_GETNEXTITEM: ::UINT = (TV_FIRST + 10);
+
+// Tree View Get Next item type for TVM_GETNEXTITEM and TVM_SELECTITEM
+pub const TVGN_ROOT: ::WPARAM = 0x0000;
+pub const TVGN_NEXT: ::WPARAM = 0x0001;
+pub const TVGN_PREVIOUS: ::WPARAM = 0x0002;
+pub const TVGN_PARENT: ::WPARAM = 0x0003;
+pub const TVGN_CHILD: ::WPARAM = 0x0004;
+pub const TVGN_FIRSTVISIBLE: ::WPARAM = 0x0005;
+pub const TVGN_NEXTVISIBLE: ::WPARAM = 0x0006;
+pub const TVGN_PREVIOUSVISIBLE: ::WPARAM = 0x0007;
+pub const TVGN_DROPHILITE: ::WPARAM = 0x0008;
+pub const TVGN_CARET: ::WPARAM = 0x0009;
+pub const TVGN_LASTVISIBLE: ::WPARAM = 0x000A;
+// IE 6
+pub const TVGN_NEXTSELECTED: ::WPARAM = 0x000B;
+
+// Tree View Select Item type (in addition to a few of the TVGN_ types
+// Win XP
+pub const TVSI_NOSINGLEEXPAND: ::WPARAM = 0x8000; // Should not conflict with TVGN flags.
+pub const TVM_SELECTITEM: ::UINT = (TV_FIRST + 11);
+
 //5135
 pub const TVM_GETITEMA: ::UINT = (TV_FIRST + 12);
 pub const TVM_GETITEMW: ::UINT = (TV_FIRST + 62);
+pub const TVM_SETITEMA: ::UINT = (TV_FIRST + 13);
+pub const TVM_SETITEMW: ::UINT = (TV_FIRST + 63);
+pub const TVM_EDITLABELA: ::UINT = (TV_FIRST + 14);
+pub const TVM_EDITLABELW: ::UINT = (TV_FIRST + 65);
+pub const TVM_GETEDITCONTROL: ::UINT = (TV_FIRST + 15);
+pub const TVM_GETVISIBLECOUNT: ::UINT = (TV_FIRST + 16);
+pub const TVM_HITTEST: ::UINT = (TV_FIRST + 17);
 
 //5434
 pub type LPNM_TREEVIEWA = LPNMTREEVIEWA;
