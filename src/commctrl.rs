@@ -490,6 +490,9 @@ pub const LVM_INSERTCOLUMNW: ::UINT = (LVM_FIRST + 97);  // iCol in wParam, *con
 pub const LVM_DELETECOLUMN: ::UINT = (LVM_FIRST + 28);  // iCol in wParam
 pub const LVM_GETCOLUMNWIDTH: ::UINT = (LVM_FIRST + 29);  // iCol in wParam
 
+//3708
+pub const LVM_SETITEMSTATE: ::UINT = (LVM_FIRST + 43);  // index (or -1 for all items) in wParam, LVITEM with stateMask and state in lParam; FALSE on error
+
 //4433
 pub struct NMLISTVIEW {
     pub hdr: ::NMHDR,
