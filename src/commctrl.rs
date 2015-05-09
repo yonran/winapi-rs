@@ -335,6 +335,27 @@ impl ::std::default::Default for LVITEMW {
     }
 }
 
+//3318
+// List View Next Item flags for LVM_GETNEXTITEM and LVM_GETNEXTITEMINDEX messages
+pub const LVNI_ALL: ::UINT = 0x0000;
+
+pub const LVNI_FOCUSED: ::UINT = 0x0001;
+pub const LVNI_SELECTED: ::UINT = 0x0002;
+pub const LVNI_CUT: ::UINT = 0x0004;
+pub const LVNI_DROPHILITED: ::UINT = 0x0008;
+pub const LVNI_STATEMASK: ::UINT = (LVNI_FOCUSED | LVNI_SELECTED | LVNI_CUT | LVNI_DROPHILITED);
+
+pub const LVNI_VISIBLEORDER: ::UINT = 0x0010;
+pub const LVNI_PREVIOUS: ::UINT = 0x0020;
+pub const LVNI_VISIBLEONLY: ::UINT = 0x0040;
+pub const LVNI_SAMEGROUPONLY: ::UINT = 0x0080;
+
+pub const LVNI_ABOVE: ::UINT = 0x0100;
+pub const LVNI_BELOW: ::UINT = 0x0200;
+pub const LVNI_TOLEFT: ::UINT = 0x0400;
+pub const LVNI_TORIGHT: ::UINT = 0x0800;
+pub const LVNI_DIRECTIONMASK: ::UINT = (LVNI_ABOVE | LVNI_BELOW | LVNI_TOLEFT | LVNI_TORIGHT);
+
 //3518
 #[repr(C)] #[derive(Clone, Copy, Debug)]
 pub struct LVCOLUMNA {
